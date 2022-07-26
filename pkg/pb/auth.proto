@@ -1,0 +1,49 @@
+syntax = "proto3";
+package pb;
+
+option go_package = "github.com/mahdi-asadzadeh/go-grpc-auth-microservice/pkg/pb";
+
+message  User {
+  string Email = 1;
+  string Password = 2;
+}
+
+// Register intput/output
+message RegisterRequest {
+    User user = 1;
+}
+
+message RegisterResponse {
+  int64 id = 1;
+  string Email = 2;
+  string create_at = 3;
+  string update_at = 4;
+}
+// ----------------------------
+
+// Login intput/output
+message LoginRequest {
+  User user = 1;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+// ----------------------------
+
+// Validate intput/output
+message ValidateRequest {
+  string token = 1;
+}
+
+message ValidateResponse {
+  string Email = 1;
+  int64 Id = 2;
+}
+// ----------------------------
+
+service AuthService {
+  rpc Register(RegisterRequest) returns (RegisterResponse) {};
+  rpc Login(LoginRequest) returns (LoginResponse) {};
+  rpc Validate(ValidateRequest) returns (ValidateResponse) {};
+}
