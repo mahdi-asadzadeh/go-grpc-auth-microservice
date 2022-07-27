@@ -49,8 +49,8 @@ func (s *Server) Validate(ctx context.Context, req *pb.ValidateRequest) (*pb.Val
 		return nil, status.Error(codes.NotFound, "Not found user.")
 	}
 	var user models.User
-	result := s.H.DB.Where(&models.User{Email: claims.Email}).First(&user)
-	if result != nil {
+	err = s.H.DB.Where("email = ?", claims.Email).First(&user).Error
+	if err != nil {
 		return nil, status.Error(codes.NotFound, "Not found user.")
 	}
 	return &pb.ValidateResponse{Email: user.Email, Id: int64(user.ID)}, nil
